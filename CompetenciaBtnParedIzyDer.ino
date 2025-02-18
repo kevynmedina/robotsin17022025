@@ -13,7 +13,7 @@
 #define MOTOR_LEFT_NEGATIVE 04
 #define MOTOR_LEFT_A 23
 #define MOTOR_LEFT_B 19
-#define SPEED 70//55//80
+#define SPEED 55//55//80
 
 #define CNY_0 36
 #define CNY_1 33
@@ -23,7 +23,7 @@
 #define CNY_5 32
 #define CNY_6 39
 #define LED_ON 13
-#define RANGE 400//400
+#define RANGE 350//400
 const String deviceName = "leviatan_esp32";
 bool pushState = 0;
 
@@ -31,7 +31,7 @@ int estado = 0;
 bool botonPresionado = false;
 
 void setup() {
-  // Serial.begin(9600);
+ // Serial.begin(9600);
   adcAttachPin(CNY_0);
   adcAttachPin(CNY_1);
   adcAttachPin(CNY_2);
@@ -84,7 +84,8 @@ void loop() {
             break;
         case 1:
         //MANO IZQUIERDA
-                 if (sensor6 < RANGE && sensor4 < RANGE && sensor5 < 800) {
+                 if (sensor6 < RANGE && sensor4 < RANGE && sensor5 < 800) { 
+                 //if (sensor4 < RANGE+500 && sensor4 < RANGE && sensor5 < 800) {
      // SerialBT.println("IZQUIERDA");
 
       izquierdaRueda();
@@ -105,6 +106,7 @@ void loop() {
         case 3:
         //MANO DERECHA
             if (sensor0 < RANGE && sensor2 < RANGE && sensor1 < 800) {
+            //  if (sensor2 < RANGE+400 && sensor2 < RANGE && sensor1 < 800) {
     //      SerialBT.println("DERECHA");
     
           derechaRueda();
@@ -122,19 +124,6 @@ void loop() {
             break;
     }
 }
-
-void detenerRobot() {
-    // Código para detener motores
-}
-
-void algoritmoManoIzquierda() {
-
-}
-
-void algoritmoManoDerecha() {
-    
-}
-
 
 void avanzarCD(int sensor2) {
   if (sensor2 < RANGE ) {
@@ -164,22 +153,28 @@ void avanzarCI(int sensor4) {
 void izquierdaRueda() {
   /* Motor derecho con movimiento a enfrente*/
   analogWrite(MOTOR_RIGTH_POSITIVE,  0);
-  analogWrite(MOTOR_RIGTH_NEGATIVE, SPEED + SPEED * 1.9);
+  analogWrite(MOTOR_RIGTH_NEGATIVE, SPEED + SPEED * 0.9);
   /* Motor izequierdo con movimiento a enfrente*/
   analogWrite(MOTOR_LEFT_POSITIVE, 0);
-  analogWrite(MOTOR_LEFT_NEGATIVE, SPEED - SPEED * .7);
+  //analogWrite(MOTOR_LEFT_NEGATIVE, SPEED - SPEED * .7);
+  analogWrite(MOTOR_LEFT_NEGATIVE, SPEED - SPEED * .8);
   //        delay(110);
 }
 
 void derechaRueda() {
   /* Motor derecho con movimiento a enfrente*/
-  analogWrite(MOTOR_RIGTH_POSITIVE,  0);
-  //analogWrite(MOTOR_RIGTH_NEGATIVE, SPEED *0.1);
-  analogWrite(MOTOR_RIGTH_NEGATIVE, 70 *0.1);
+  //analogWrite(MOTOR_RIGTH_POSITIVE,  0);
+  //analogWrite(MOTOR_RIGTH_NEGATIVE, 70 *0.1);
   /* Motor izquierdo con movimiento a enfrente*/
+  //analogWrite(MOTOR_LEFT_POSITIVE, 0);
+  //analogWrite(MOTOR_LEFT_NEGATIVE, 70 * 1.9);
+  
+  analogWrite(MOTOR_RIGTH_POSITIVE,  0);
+  analogWrite(MOTOR_RIGTH_NEGATIVE, SPEED - SPEED * .8);
+  /* Motor izequierdo con movimiento a enfrente*/
   analogWrite(MOTOR_LEFT_POSITIVE, 0);
-  //analogWrite(MOTOR_LEFT_NEGATIVE, SPEED * 0.8);
-  analogWrite(MOTOR_LEFT_NEGATIVE, 70 * 1.9);
+  analogWrite(MOTOR_LEFT_NEGATIVE, SPEED + SPEED * 0.8);
+  
   //        delay(110);
 }
 
@@ -209,7 +204,6 @@ void detener(int mIzq, int mDer) {
 
   analogWrite(MOTOR_LEFT_POSITIVE, mIzq);
   analogWrite(MOTOR_LEFT_NEGATIVE, 0);
-  delay(100);
 }
 
 void avanzarCentrado(int mIzq, int mDer) {
